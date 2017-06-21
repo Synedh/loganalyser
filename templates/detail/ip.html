@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/datamaps.world.min.js') }}"></script>
+</head>
+<body>
+    <div id="container" style="position: relative; width: 1000px; height: 600px"></div>
+    <div><span><a href="/logs">Back</a></span></div>
+    <script>
+        var ips = JSON.parse('{{ ips|safe }}');
+        var data = [];
+
+        var map = new Datamap({
+            element: document.getElementById('container'),
+            scope: 'world',
+            fills: {
+                defaultFill: '#CCCCCC',
+                'high': '#F80012',
+                'medium': '#FFE700',
+                'low': '#1DD300'
+            }
+        });
+
+        var bubblesConfig = {
+            popupTemplate: function (geo, data) {
+                return ('<div class="hoverinfo">' + data.ip + '<br />Value : ' + data.radius
+                        + '<br />Country : ' + data.country
+                        + '<br />Region : ' + data.region
+                        + '<br />City : ' + data.city);
+            }
+        };
+
+        function httpGetAsync(theUrl, callback, value) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText, value);
+            };
+            xmlHttp.open("GET", theUrl, true); // true for asynchronous
+            xmlHttp.send(null);
+        }
+
+        function updateMap(ip_data, value) {
+            ip_data = JSON.parse(ip_data);
+            data.push({
+                ip: ip_data["ip"],
+                latitude: parseFloat(ip_data["latitude"]),
+                longitude: parseFloat(ip_data["longitude"]),
+                country: ip_data["country_name"],
+                region: ip_data["region_name"],
+                city: ip_data["city"],
+                fillKey: function() {
+                    if (value > 40) return 'high';
+                    else if (value > 10) return 'medium';
+                    else return 'low';
+                },
+                radius: value
+            });
+            map.bubbles(data, bubblesConfig);
+        }
+        for (var i = 0; i < ips.length; ++i)
+            httpGetAsync('http://freegeoip.net/json/' + ips[i]['ip'], updateMap, ips[i]['value']);
+    </script>
+</body>
+</html>

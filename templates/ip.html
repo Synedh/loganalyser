@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <ul>
+        {% for key, value in ip_data.items() %}
+        <li>{{ key }} : {{ value }}</li>
+        {% endfor %}
+    </ul>
+    <div><a href="/logs/{{ id }}">Back</a></div>
+</body>
+</html>

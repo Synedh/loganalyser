@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <title>Log Detail</title>
+</head>
+<body>
+    <ul>
+        {% for head, key in ziped %}
+        <li>{{ head[0] }} : {{ key }}</li>
+        {% endfor %}
+    </ul>
+    <span><a href="/logs/{{ id }}/ip">IP Detail</a></span>
+    <span><a href="/logs">Back</a></span>
+</body>
+</html>

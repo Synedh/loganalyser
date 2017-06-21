@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>	<script type="text/javascript">
+	window.onload = function () {
+	    var data = JSON.parse('{{ date_data|safe }}');
+	    for (var i = 0; i < data.length; ++i) {
+	        data[i] = {x: new Date(data[i]['date']), y: data[i]['value']};
+        }
+        console.log(data);
+		var chart = new CanvasJS.Chart("chartContainer",
+		{
+
+			title:{
+				text: "Web Traffic",
+				fontSize: 30
+			},
+                        animationEnabled: true,
+			axisX:{
+
+				gridColor: "Silver",
+				tickColor: "silver",
+				valueFormatString: "DD/MMM"
+
+			},
+                        toolTip:{
+                          shared:true
+                        },
+			theme: "theme2",
+			axisY: {
+				gridColor: "Silver",
+				tickColor: "silver"
+			},
+			legend:{
+                cursor:"pointer",
+                itemclick:function(e){
+                  if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                  }
+                  else{
+                    e.dataSeries.visible = true;
+                  }
+                  chart.render();
+                }
+			},
+			data: [
+			{
+				type: "line",
+				showInLegend: true,
+				name: "Visits",
+				color: "#20B2AA",
+				lineThickness: 2,
+
+				dataPoints: data
+			}
+
+
+			]
+		});
+
+chart.render();
+}
+</script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/canvasjs.min.js') }}"></script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <div><span><a href="/logs">Back</a></span></div>
+</body>
+</html>

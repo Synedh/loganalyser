@@ -1,0 +1,61 @@
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    max-width: 1000px;
+    table-layout: fixed;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+th {
+    border: 1px solid black;
+    background-color: #f2f2f2;
+    padding: 3px 6px 3px 6px;
+    text-align: left;
+    max-width: 500px;
+}
+
+td {
+    border: 1px solid black;
+    padding: 3px 6px 3px 6px;
+    text-align: left;
+    word-wrap: break-word;
+    max-width: 500px;
+    text-overflow: ellipsis;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+}
+
+tr:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.truncate {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+select {
+    width: 18px;
+}
+
+#chartdiv {
+	width	: 100%;
+	height	: 500px;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+}

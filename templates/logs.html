@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <title>Log list</title>
+</head>
+<body>
+    <table style="overflow-x:auto;">
+    <thead>
+        <tr>
+            {% for head in header %}
+            <th>
+                {{ head[0] }}
+                <select id="dropdown" onchange="location=this.value;">
+                    <option selected disabled hidden value=""></option>
+                    <option value="logs/detail/{{ head[1] }}">Detail</option>
+                </select>
+            </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr onclick="location.href='logs/{{ logs.index(log) }}'">
+            {% for key in log %}
+            <td class="truncate"><a href="logs/{{ logs.index(log) }}">{{ key }}</a></td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</body>
+</html>
